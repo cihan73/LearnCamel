@@ -5,11 +5,9 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     public Transform context;
-    public void Prepare(/*CardData cardData*/)
+    public void Prepare()
     {
-    //    ID = cardData.ID;
-    //    cardVisual.SetIcon(cardData.iconSprite);
-    //    Close();
+    
     }
     public void Select()
     {
