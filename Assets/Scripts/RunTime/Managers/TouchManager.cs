@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.DeviceSimulation;
 using UnityEngine;
 
 public class TouchManager : MonoBehaviour
@@ -14,14 +15,19 @@ public class TouchManager : MonoBehaviour
 
     private void GetTouch(Vector3 pos)
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             var hit = Physics2D.OverlapPoint(cam.ScreenToWorldPoint(pos)) as BoxCollider2D;
-            if(hit != null && hit.CompareTag(collisionTag))
+            if (CanTouch(hit))
             {
-                Debug.Log(hit.gameObject.name, hit.gameObject);
+                Debug.Log(hit.gameObject.name, hit.gameObject);             
             }
         }
+    }
+
+    private bool CanTouch(Collider2D hit)
+    {
+        return hit != null && hit.CompareTag(collisionTag);
     }
 
 }
