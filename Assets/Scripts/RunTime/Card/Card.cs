@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
-    public Transform context;
-    public void Prepare()
+    [SerializeField] private Transform context;
+    public int ID {  get; private set; }
+
+    public void Prepare(int id)
     {
-    
+    ID = id;
     }
     public void Select()
     {

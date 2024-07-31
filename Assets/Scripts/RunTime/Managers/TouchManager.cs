@@ -1,26 +1,47 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.DeviceSimulation;
 using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
     [SerializeField] Camera cam;
     [SerializeField] string collisionTag;
+    bool _canTouch;
+
+    void Start()
+    {
+        _canTouch = false;
+        StartCoroutine(WaitForTouch_Cor());
+    }
+
+    IEnumerator WaitForTouch_Cor()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        _canTouch = true;
+    }
 
     void Update()
     {
-        GetTouch(Input.mousePosition);
+        if (_canTouch)
+        {
+            GetTouch(Input.mousePosition);
+        }
     }
 
     private void GetTouch(Vector3 pos)
     {
         if (Input.GetMouseButtonDown(0))
         {
-            var hit = Physics2D.OverlapPoint(cam.ScreenToWorldPoint(pos)) as BoxCollider2D;
+            var hit = Physics2D.OverlapPoint(cam.ScreenToWorldPoint(pos));
             if (CanTouch(hit))
             {
-                Debug.Log(hit.gameObject.name, hit.gameObject);             
+                var selectedCard = hit.gameObject.GetComponent<Card>();
+                TouchEvents.OnCardTapped?.Invoke(selectedCard);
+            }
+            else
+            {
+                TouchEvents.OnEmptyTapped?.Invoke();
             }
         }
     }
@@ -29,5 +50,6 @@ public class TouchManager : MonoBehaviour
     {
         return hit != null && hit.CompareTag(collisionTag);
     }
+
 
 }
